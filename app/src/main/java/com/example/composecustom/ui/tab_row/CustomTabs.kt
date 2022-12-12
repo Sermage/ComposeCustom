@@ -1,19 +1,13 @@
 package com.example.composecustom.ui.tab_row
 
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.*
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,7 +21,7 @@ import com.example.composecustom.ui.tab_row.utils.customTabIndicatorOffset
 import com.example.composecustom.ui.theme.ComposeCustomTheme
 
 @Composable
-fun Tabs(
+fun CustomTabs(
     modifier: Modifier = Modifier,
     tabs: List<TabItem>,
 ) {
@@ -52,7 +46,11 @@ fun Tabs(
 
             Box(
                 modifier = Modifier
-                    .customTabIndicatorOffset(selectedTabPage, tabPositions,tabWidths[selectedTabPage.ordinal])
+                    .customTabIndicatorOffset(
+                        selectedTabPage,
+                        tabPositions,
+                        tabWidths[selectedTabPage.ordinal]
+                    )
                     .height(4.dp)
                     .background(color = MaterialTheme.colors.primary)
             )
@@ -98,7 +96,7 @@ fun TabsPreview() {
                 .fillMaxSize()
                 .background(color = MaterialTheme.colors.background)
         ) {
-            Tabs(tabs = tabs, modifier = Modifier.align(Center))
+            CustomTabs(tabs = tabs, modifier = Modifier.align(Center))
         }
     }
 }

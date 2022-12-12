@@ -2,5 +2,5 @@
     <string name="app_name">ComposeCustom</string>
 
     <string name="tab_rent_title">Rent</string>
-    <string name="tab_sale_title">SalesSales</string>
+    <string name="tab_sale_title">Direct Sale</string>
 </resources>

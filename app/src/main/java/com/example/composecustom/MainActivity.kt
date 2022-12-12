@@ -3,13 +3,14 @@ package com.example.composecustom
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.composecustom.ui.tab_row.CustomTabs
+import com.example.composecustom.ui.tab_row.TabItem
 import com.example.composecustom.ui.theme.ComposeCustomTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,26 +19,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeCustomTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = MaterialTheme.colors.background)
                 ) {
-                    Greeting("Android")
+                    val tabs = listOf(TabItem.Sale, TabItem.Rent)
+                    CustomTabs(tabs = tabs, modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ComposeCustomTheme {
-        Greeting("Android")
     }
 }
