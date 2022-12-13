@@ -18,14 +18,14 @@ import androidx.compose.ui.unit.Dp
 fun Modifier.customTabIndicatorOffset(
     selectedTabPage: Int,
     tabPositions: List<TabPosition>,
-    tabTextWidth: Dp
+    tabTextWidth: Dp,
+    animationDelay: Int = 300
 ): Modifier = composed(
     inspectorInfo = debugInspectorInfo {
         name = "customTabIndicatorOffset"
         value = tabPositions[selectedTabPage]
     }
 ) {
-
     val transition = updateTransition(
         targetState = selectedTabPage,
         label = "Tab indicator"
@@ -33,9 +33,9 @@ fun Modifier.customTabIndicatorOffset(
     val indicatorLeft by transition.animateDp(
         transitionSpec = {
             if (initialState < targetState) {
-                tween(durationMillis = 500, delayMillis = 500)
+                tween(durationMillis = 500, delayMillis = animationDelay)
             } else {
-                tween(durationMillis = 300)
+                tween(durationMillis = 500)
             }
         },
         label = "Indicator left"
@@ -47,7 +47,7 @@ fun Modifier.customTabIndicatorOffset(
             if (initialState < targetState) {
                 tween(durationMillis = 500)
             } else {
-                tween(durationMillis = 500, delayMillis = 300)
+                tween(durationMillis = 500, delayMillis = animationDelay)
             }
         },
         label = "Indicator right"
@@ -59,5 +59,4 @@ fun Modifier.customTabIndicatorOffset(
         .wrapContentSize(Alignment.BottomStart)
         .offset(x = indicatorLeft)
         .width(indicatorRight - indicatorLeft)
-
 }

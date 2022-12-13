@@ -10,7 +10,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.composecustom.ui.tab_row.CustomTabs
-import com.example.composecustom.ui.tab_row.TabItem
 import com.example.composecustom.ui.theme.ComposeCustomTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +23,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(color = MaterialTheme.colors.background)
                 ) {
-                    val tabs = listOf(TabItem.Sale, TabItem.Rent, TabItem.Presale)
+                    val tabs = listOf("Direct Sale", "Rent", "Presale")
                     CustomTabs(tabs = tabs, modifier = Modifier.align(Alignment.Center))
                 }
             }
