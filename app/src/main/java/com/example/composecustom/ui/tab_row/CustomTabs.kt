@@ -26,7 +26,7 @@ fun CustomTabs(
     modifier: Modifier = Modifier,
     tabs: List<TabItem>,
 ) {
-    var selectedTabPage by remember { mutableStateOf(TabItem.Sale) }
+    var selectedTabPage by remember { mutableStateOf(0) }
 
     val tabTextWidths = remember {
         val tabWidthStateList = mutableStateListOf<Dp>()
@@ -39,7 +39,7 @@ fun CustomTabs(
 
     TabRow(
         modifier = modifier,
-        selectedTabIndex = selectedTabPage.ordinal,
+        selectedTabIndex = selectedTabPage,
         backgroundColor = Color.Transparent,
         divider = {},
         indicator = { tabPositions ->
@@ -49,19 +49,19 @@ fun CustomTabs(
                     .customTabIndicatorOffset(
                         selectedTabPage,
                         tabPositions,
-                        tabTextWidths[selectedTabPage.ordinal]
+                        tabTextWidths[selectedTabPage]
                     )
                     .height(4.dp)
-                    .background(color = MaterialTheme.colors.primary, RoundedCornerShape(10.dp))
+                    .background(color = Color.Red, RoundedCornerShape(10.dp))
             )
         }
     ) {
         tabs.forEachIndexed { index, tabItem ->
             Tab(
-                selected = selectedTabPage.ordinal == index,
-                onClick = { selectedTabPage = tabItem },
-                selectedContentColor = MaterialTheme.colors.primary,
-                unselectedContentColor = MaterialTheme.colors.onBackground,
+                selected = selectedTabPage == index,
+                onClick = { selectedTabPage = index },
+                selectedContentColor = Color.White,
+                unselectedContentColor = Color.Gray,
             ) {
                 Column(
                     Modifier
