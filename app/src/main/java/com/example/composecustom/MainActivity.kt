@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(color = MaterialTheme.colors.background)
                 ) {
-                    val tabs = listOf(TabItem.Sale, TabItem.Rent)
+                    val tabs = listOf(TabItem.Sale, TabItem.Rent, TabItem.Presale)
                     CustomTabs(tabs = tabs, modifier = Modifier.align(Alignment.Center))
                 }
             }

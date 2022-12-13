@@ -2,6 +2,7 @@ package com.example.composecustom.ui.tab_row
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -27,7 +28,7 @@ fun CustomTabs(
 ) {
     var selectedTabPage by remember { mutableStateOf(TabItem.Sale) }
 
-    val tabWidths = remember {
+    val tabTextWidths = remember {
         val tabWidthStateList = mutableStateListOf<Dp>()
         repeat(tabs.size) {
             tabWidthStateList.add(0.dp)
@@ -37,8 +38,7 @@ fun CustomTabs(
     val density = LocalDensity.current
 
     TabRow(
-        modifier = modifier
-            .padding(horizontal = 80.dp),
+        modifier = modifier,
         selectedTabIndex = selectedTabPage.ordinal,
         backgroundColor = Color.Transparent,
         divider = {},
@@ -49,10 +49,10 @@ fun CustomTabs(
                     .customTabIndicatorOffset(
                         selectedTabPage,
                         tabPositions,
-                        tabWidths[selectedTabPage.ordinal]
+                        tabTextWidths[selectedTabPage.ordinal]
                     )
                     .height(4.dp)
-                    .background(color = MaterialTheme.colors.primary)
+                    .background(color = MaterialTheme.colors.primary, RoundedCornerShape(10.dp))
             )
         }
     ) {
@@ -75,7 +75,7 @@ fun CustomTabs(
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally),
                         onTextLayout = { textLayoutResult ->
-                            tabWidths[index] =
+                            tabTextWidths[index] =
                                 with(density) { textLayoutResult.size.width.toDp() }
 
                         }

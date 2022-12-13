@@ -1,7 +1,12 @@
 package com.example.composecustom.ui.tab_row.utils
 
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.TabPosition
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -14,7 +19,7 @@ import com.example.composecustom.ui.tab_row.TabItem
 fun Modifier.customTabIndicatorOffset(
     selectedTabPage: TabItem,
     tabPositions: List<TabPosition>,
-    tabWidth: Dp
+    tabTextWidth: Dp
 ): Modifier = composed(
     inspectorInfo = debugInspectorInfo {
         name = "customTabIndicatorOffset"
@@ -23,37 +28,37 @@ fun Modifier.customTabIndicatorOffset(
 ) {
 
     val transition = updateTransition(
-        targetState = selectedTabPage,
+        targetState = selectedTabPage.ordinal,
         label = "Tab indicator"
     )
     val indicatorLeft by transition.animateDp(
         transitionSpec = {
-            if (TabItem.Sale isTransitioningTo TabItem.Rent) {
-                spring(stiffness = Spring.StiffnessLow)
+            if (initialState < targetState) {
+                tween(durationMillis = 500, delayMillis = 500)
             } else {
-                spring(stiffness = Spring.StiffnessHigh)
+                tween(durationMillis = 500)
             }
         },
         label = "Indicator left"
     ) { page ->
-        (tabPositions[page.ordinal].left + tabPositions[page.ordinal].right-tabWidth)/2
+        (tabPositions[page].left + tabPositions[page].right - tabTextWidth) / 2
     }
     val indicatorRight by transition.animateDp(
         transitionSpec = {
-            if (TabItem.Sale isTransitioningTo TabItem.Rent) {
-                spring(stiffness = Spring.StiffnessHigh)
+            if (initialState < targetState) {
+                tween(durationMillis = 500)
             } else {
-                spring(stiffness = Spring.StiffnessLow)
+                tween(durationMillis = 500, delayMillis = 500)
             }
         },
         label = "Indicator right"
     ) { page ->
-        (tabPositions[page.ordinal].left + tabPositions[page.ordinal].right-tabWidth)/2+tabWidth
+        (tabPositions[page].left + tabPositions[page].right - tabTextWidth) / 2 + tabTextWidth
     }
 
     fillMaxWidth()
         .wrapContentSize(Alignment.BottomStart)
         .offset(x = indicatorLeft)
-        .width(indicatorRight-indicatorLeft)
+        .width(indicatorRight - indicatorLeft)
 
 }
