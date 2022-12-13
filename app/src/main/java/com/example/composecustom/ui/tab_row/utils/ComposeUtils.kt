@@ -30,7 +30,7 @@ fun Modifier.customTabIndicatorOffset(
         targetState = selectedTabPage,
         label = "Tab indicator"
     )
-    val indicatorLeft by transition.animateDp(
+    val indicatorLeftPoint by transition.animateDp(
         transitionSpec = {
             if (initialState < targetState) {
                 tween(durationMillis = 500, delayMillis = animationDelay)
@@ -38,11 +38,11 @@ fun Modifier.customTabIndicatorOffset(
                 tween(durationMillis = 500)
             }
         },
-        label = "Indicator left"
+        label = "Indicator left point"
     ) { page ->
         (tabPositions[page].left + tabPositions[page].right - tabTextWidth) / 2
     }
-    val indicatorRight by transition.animateDp(
+    val indicatorRightPoint by transition.animateDp(
         transitionSpec = {
             if (initialState < targetState) {
                 tween(durationMillis = 500)
@@ -50,13 +50,13 @@ fun Modifier.customTabIndicatorOffset(
                 tween(durationMillis = 500, delayMillis = animationDelay)
             }
         },
-        label = "Indicator right"
+        label = "Indicator right point"
     ) { page ->
         (tabPositions[page].left + tabPositions[page].right - tabTextWidth) / 2 + tabTextWidth
     }
 
     fillMaxWidth()
         .wrapContentSize(Alignment.BottomStart)
-        .offset(x = indicatorLeft)
-        .width(indicatorRight - indicatorLeft)
+        .offset(x = indicatorLeftPoint)
+        .width(indicatorRightPoint - indicatorLeftPoint)
 }
