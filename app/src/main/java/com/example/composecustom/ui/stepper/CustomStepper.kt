@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 fun CustomStepper(
     modifier: Modifier = Modifier
 ) {
-    var count by remember { mutableStateOf(0) }
+    var count by remember { mutableStateOf(16) }
 
     var leftIconVisible by remember { mutableStateOf(true) }
     var rightIconVisible by remember { mutableStateOf(true) }
@@ -42,16 +42,18 @@ fun CustomStepper(
     SideEffect {
         scope.launch {
             if (leftIconVisible.not()) {
-                delay(100)
-                countVisibility = false
                 delay(200)
+                countVisibility = false
+                delay(100)
+                count = count.minus(1)
                 leftIconVisible = true
                 countVisibility = true
             }
             if (rightIconVisible.not()) {
-                delay(100)
-                countVisibility = false
                 delay(200)
+                countVisibility = false
+                delay(100)
+                count = count.plus(1)
                 rightIconVisible = true
                 countVisibility = true
             }
@@ -83,7 +85,6 @@ fun CustomStepper(
 
                 IconButton(
                     onClick = {
-                        count = count.minus(1)
                         leftIconVisible = false
                     },
                     interactionSource = interactionSource
@@ -98,11 +99,15 @@ fun CustomStepper(
             AnimatedVisibility(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 visible = countVisibility,
-                enter = slideInHorizontally(tween(200),
-                    initialOffsetX = { if (leftIconVisible.not()) -it else it }) + fadeIn(),
+                enter = slideInHorizontally(tween(300),
+                    initialOffsetX = { if (leftIconVisible.not()) -it * 3 else it * 3 }) + fadeIn(
+                    tween(durationMillis = 200)
+                ),
                 exit = slideOutHorizontally(
-                    tween(300),
-                    targetOffsetX = { if (leftIconVisible.not()) -it else it }) + fadeOut()
+                    tween(200),
+                    targetOffsetX = { if (leftIconVisible.not()) -it * 3 else it * 3 }) + fadeOut(
+                    tween(durationMillis = 200)
+                )
             ) {
                 Text(
                     text = "$count",
@@ -123,7 +128,6 @@ fun CustomStepper(
 
                 IconButton(
                     onClick = {
-                        count = count.plus(1)
                         rightIconVisible = false
                     },
                     interactionSource = interactionSource
