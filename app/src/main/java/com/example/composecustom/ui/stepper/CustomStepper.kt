@@ -64,6 +64,8 @@ fun CustomStepper(
     val isPressed by interactionSource.collectIsPressedAsState()
     val sizeScale by animateFloatAsState(if (isPressed) 0.9f else 1f)
 
+    val arrowColor by animateColorAsState(targetValue = if (isPressed) BurntSienna else Azalea)
+
     Card(
         modifier = modifier
             .wrapContentSize()
@@ -91,7 +93,7 @@ fun CustomStepper(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_left),
-                        tint = Azalea,
+                        tint = arrowColor,
                         contentDescription = "arrow left"
                     )
                 }
@@ -135,7 +137,7 @@ fun CustomStepper(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_right),
                         contentDescription = "arrow right",
-                        tint = Azalea,
+                        tint = arrowColor,
                     )
                 }
             }
