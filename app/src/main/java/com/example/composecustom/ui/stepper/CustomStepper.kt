@@ -4,15 +4,16 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -26,10 +27,13 @@ import com.example.composecustom.ui.theme.ComposeCustomTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CustomStepper(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = Color.White,
+    cornerRadiusDp: Int = 99,
+    primaryColor: Color = BurntSienna,
+    secondaryColor: Color = Azalea
 ) {
     var count by remember { mutableStateOf(16) }
 
@@ -60,11 +64,15 @@ fun CustomStepper(
         }
     }
 
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val sizeScale by animateFloatAsState(if (isPressed) 0.9f else 1f)
+    val interactionSourceLeft = remember { MutableInteractionSource() }
+    val interactionSourceRight = remember { MutableInteractionSource() }
 
-    val arrowColor by animateColorAsState(targetValue = if (isPressed) BurntSienna else Azalea)
+    val isPressedLeftIcon by interactionSourceLeft.collectIsPressedAsState()
+    val isPressedRightIcon by interactionSourceRight.collectIsPressedAsState()
+    val sizeScale by animateFloatAsState(if (isPressedLeftIcon || isPressedRightIcon) 0.9f else 1f)
+
+    val leftArrowColor by animateColorAsState(targetValue = if (isPressedLeftIcon) primaryColor else secondaryColor)
+    val rightArrowColor by animateColorAsState(targetValue = if (isPressedRightIcon) primaryColor else secondaryColor)
 
     Card(
         modifier = modifier
@@ -74,8 +82,8 @@ fun CustomStepper(
                 scaleY = sizeScale
 
             },
-        backgroundColor = Color.White,
-        shape = RoundedCornerShape(99.dp)
+        backgroundColor = backgroundColor,
+        shape = RoundedCornerShape(cornerRadiusDp.dp)
     ) {
         Row {
             AnimatedVisibility(
@@ -89,11 +97,16 @@ fun CustomStepper(
                     onClick = {
                         leftIconVisible = false
                     },
-                    interactionSource = interactionSource
+                    interactionSource = interactionSourceLeft,
+                    modifier = Modifier
+                        .indication(
+                            interactionSource = interactionSourceLeft,
+                            indication = rememberRipple(color = primaryColor, radius = 24.dp)
+                        )
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_left),
-                        tint = arrowColor,
+                        tint = leftArrowColor,
                         contentDescription = "arrow left"
                     )
                 }
@@ -114,7 +127,7 @@ fun CustomStepper(
                 Text(
                     text = "$count",
                     style = MaterialTheme.typography.h1,
-                    color = BurntSienna,
+                    color = primaryColor,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .padding(vertical = 8.dp)
@@ -132,12 +145,17 @@ fun CustomStepper(
                     onClick = {
                         rightIconVisible = false
                     },
-                    interactionSource = interactionSource
+                    interactionSource = interactionSourceRight,
+                    modifier = Modifier
+                        .indication(
+                            interactionSource = interactionSourceRight,
+                            indication = rememberRipple(color = primaryColor, radius = 24.dp)
+                        )
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_right),
                         contentDescription = "arrow right",
-                        tint = arrowColor,
+                        tint = rightArrowColor,
                     )
                 }
             }
